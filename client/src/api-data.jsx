@@ -1,16 +1,19 @@
 import { useQuery } from "react-query";
 import { useState } from "react";
 
-const apiData = async () => {
-    try {
-      const res = await fetch('http://localhost:3000/api/yelpData');
-      const data = await res.json();
-      console.log(data);
-      return data;
-    } catch (err) {
-      throw new Error(err.message);
-    }
-  };
+export const apiData = async () => {
+  try {
+    const res = await fetch('http://localhost:3000/api/yelpData', {
+      headers: { Accept: 'application/json' },
+    });
+    console.log(res);
+    const data = await res.json();
+    console.log(data);
+    return data;
+  } catch (err) {
+    throw new Error(err.message);
+  }
+};
 
 export const useSearchParams = () => {
   const [searchParams, setSearchParams] = useState({

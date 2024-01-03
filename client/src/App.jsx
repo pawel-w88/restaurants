@@ -7,7 +7,7 @@ import { useSearchParams } from "./api-data";
 const queryClient = new QueryClient();
 
 const Main = () => {
-  const [businesses, setBusinesses] = useState();
+  const [businesses, setBusinesses] = useState([]);
   const { isLoading, error, data } = useSearchParams();
 
   useEffect(() => {
@@ -19,10 +19,8 @@ const Main = () => {
   return (
     <>
       {isLoading && <div>Loading...</div>}
-      {error && (
-        <div>Something went wrong: {error.message || "An error occurred"}</div>
-      )}
-      {Array.isArray(businesses) &&
+      {error && <div>Something went wrong</div>}
+      {businesses &&
         businesses.map((business) => (
           <Box businessDetails={business} key={business.id} />
         ))}
