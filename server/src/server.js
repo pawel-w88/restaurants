@@ -1,8 +1,7 @@
 import express from "express";
+import bodyParser from "body-parser";
 import cors from "cors";
 import dotenv from "dotenv";
-// import fetch from "node-fetch";
-import bodyParser from "body-parser";
 dotenv.config();
 
 // wir importieren unsere verbindung
@@ -10,23 +9,32 @@ dotenv.config();
 
 const app = express();
 app.use(express.json());
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
+
 const PORT = process.env.PORT || 3000;
 const YELP_API_KEY = process.env.YELP_API_KEY;
 
 app.use(cors());
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
+// app.use(
+//   cors({
+//     origin: "http://localhost:5173",
+//     methods: ["GET", "POST", "PUT", "DELETE"],
+//     allowedHeaders: ["Cotent-Type"],
+//   })
+// );
 
 // Define a route to fetch data from Yelp API
-app.get("/api/yelpData", async (req, res) => {
+app.get("/api/yelpData", async (_req, res) => {
   try {
     const yelpResponse = await fetch(
-      "https://api.yelp.com/v3/businesses/search?location=poland&categories=restaurants",
+      "https://api.yelp.com/v3/businesses/search?location=Poland&categories=restaurants",
       {
         method: "GET",
         headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer${YELP_API_KEY}`,
+          accept: "application/json",
+          "Access-Control-allow-Orgin": "*",
+          Authorization: `Bearer ${YELP_API_KEY}`,
         },
       }
     );

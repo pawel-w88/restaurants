@@ -6,39 +6,38 @@ import { useSearchParams } from "./api-data";
 
 const queryClient = new QueryClient();
 
+function App() {
+  return (
+    <QueryClientProvider client={queryClient}>
+      <Main />
+    </QueryClientProvider>
+  );
+}
+
 const Main = () => {
   const [businesses, setBusinesses] = useState([]);
   const { isLoading, error, data } = useSearchParams();
 
   useEffect(() => {
-    data && setBusinesses(data.businesses);
+    if (data) {
+      setBusinesses(data.businesses);
+      // console.log(data);
+    }
   }, [data]);
-
-  console.log(data);
-  console.log(businesses);
   return (
     <>
-      {isLoading && <div>Loading...</div>}
-      {error && <div>Something went wrong</div>}
-      {businesses &&
-        businesses.map((business) => (
-          <Box businessDetails={business} key={business.id} />
-        ))}
+      <Categories />
+      <div className="grid grid-cols-12 p-4 gap-2">
+        <>
+          {isLoading && <div>Loading...</div>}
+          {error && <div>Something went wrong</div>}
+          {businesses.map((business) => (
+            <Box businessDetails={business} key={business.id} />
+          ))}
+        </>
+      </div>
     </>
   );
 };
-
-function App() {
-  return (
-    <QueryClientProvider client={queryClient}>
-      <div>
-        <Categories />
-      </div>
-      <div className="grid grid-cols-12 p-4 gap-2">
-        <Main />
-      </div>
-    </QueryClientProvider>
-  );
-}
 
 export default App;
